@@ -1,0 +1,15 @@
+# lokale Konfiguration / Secrets
+*.env.local
+*.secrets
+*.key
+*.pem
+
+# Office
+*.docx
+
+# Release-Assets (für GitHub Releases hochladen, aber nicht committen)
+release-assets/
+
+# OS / Editor
+.DS_Store
+Thumbs.db

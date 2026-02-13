@@ -1,0 +1,83 @@
+# Paperless-ngx:latest inklusive Redis 8 und PostgreSQL 18 auf UGREEN NAS
+# Basiert auf deiner bisherigen docker-compose.yaml (v1.2) und paperlessngx.env
+# WICHTIG: PostgreSQL nutzt hier ein NAMED VOLUME -> keine chmod/chown Probleme beim ersten Start (automatisch).
+
+services:
+  # Redis Container
+  broker:
+    image: docker.io/library/redis:8
+    container_name: Paperless-ngx-Redis
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - paperless_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # PostgreSQL Container
+  db:
+    image: docker.io/library/postgres:18
+    container_name: Paperless-ngx-PostgreSQL
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    # ✅ Named Volume: Docker verwaltet Permissions selbst -> kein mkdir/chown nötig
+    volumes:
+      - paperless_pgdata:/var/lib/postgresql
+
+    # ✅ Alle DB-Creds in paperlessngx.env (KEY=VALUE)
+    env_file:
+      - ./paperlessngx.env
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -q -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Paperless-ngx Container
+  webserver:
+    image: ghcr.io/paperless-ngx/paperless-ngx:latest
+    container_name: Paperless-ngx
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+
+    # Falls dein Compose/UGOS 'condition: service_healthy' nicht unterstützt,
+    # ersetze den ganzen depends_on Block durch:
+    # depends_on:
+    #   - db
+    #   - broker
+    depends_on:
+      db:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+
+    ports:
+      - "8180:8000"
+
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000 >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+    volumes:
+      - /volume2/docker/paperless-ngx/data:/usr/src/paperless/data:rw
+      - /volume2/docker/paperless-ngx/media:/usr/src/paperless/media:rw
+      - /volume2/docker/paperless-ngx/export:/usr/src/paperless/export:rw
+      - /volume2/docker/paperless-ngx/consume:/usr/src/paperless/consume:rw
+
+    # ✅ Alle Passwörter + (optional) weitere Paperless-Settings in paperlessngx.env
+    env_file:
+      - ./paperlessngx.env
+
+volumes:
+  paperless_pgdata:
+  paperless_redisdata:
