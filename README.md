@@ -1,4 +1,5 @@
 # Paperless Mail (UGREEN NAS)
+![PaperlessMail](Screens/PaperlessMail.png)
 
 Community-Paket für **UGREEN NAS (UGOS Pro)**: Docker-Setup für **paperless-ngx** (Redis + PostgreSQL) plus **Export-Skript mit optionalem E-Mail-Versand**.
 
