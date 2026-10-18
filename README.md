@@ -1,4 +1,7 @@
 # Paperless Mail (UGREEN NAS)
+
+[![Quality](https://github.com/Railsimulatornet/UGREEN-NAS-Paperless-Mail/actions/workflows/quality.yml/badge.svg?branch=main)](https://github.com/Railsimulatornet/UGREEN-NAS-Paperless-Mail/actions/workflows/quality.yml)
+
 ![PaperlessMail](Screens/PaperlessMail.png)
 
 Community-Paket für **UGREEN NAS (UGOS Pro)**: Docker-Setup für **paperless-ngx** (Redis + PostgreSQL) plus **Export-Skript mit optionalem E-Mail-Versand**.
