@@ -1,4 +1,4 @@
-# Monitor third-party GitHub Actions. No automatic merge in this repository.
+# Monitor GitHub Actions and Compose images. No automatic merge in this repository.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -11,3 +11,10 @@ updates:
         update-types: [patch]
       actions-minor:
         update-types: [minor]
+  - package-ecosystem: docker-compose
+    directories:
+      - /de/paperless-ngx
+      - /en/paperless-ngx
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
