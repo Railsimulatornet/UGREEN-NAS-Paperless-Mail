@@ -228,3 +228,7 @@ For a script update, replace `scripts/paperless-export_with_mail.sh`, then check
 ### License
 
 [MIT License](LICENSE). Roman Glos / Railsimulatornet.
+
+## Wartung / Maintenance
+
+[MAINTENANCE.md](MAINTENANCE.md) beschreibt die automatischen Prüfungen und Paketupdates. / Automatic checks and package updates are described in [MAINTENANCE.md](MAINTENANCE.md).
