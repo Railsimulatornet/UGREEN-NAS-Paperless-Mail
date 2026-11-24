@@ -1,4 +1,4 @@
-# Monitor GitHub Actions and Compose images. No automatic merge in this repository.
+# Monitor GitHub Actions, Compose images and scan dependencies. No automatic merge in this repository.
 version: 2
 updates:
   - package-ecosystem: github-actions
@@ -18,3 +18,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 3
+  - package-ecosystem: pip
+    directory: /.github/security
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 2
+    groups:
+      scanner-patches:
+        update-types: [patch]
