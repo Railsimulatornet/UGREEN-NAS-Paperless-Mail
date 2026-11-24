@@ -198,11 +198,11 @@ fmt_mtime() {
 
 html_escape() {
   local s="$1"
-  s="${s//&/&amp;}"
-  s="${s//</&lt;}"
-  s="${s//>/&gt;}"
-  s="${s//\"/&quot;}"
-  s="${s//\'/&#39;}"
+  s="${s//&/\&amp;}"
+  s="${s//</\&lt;}"
+  s="${s//>/\&gt;}"
+  s="${s//\"/\&quot;}"
+  s="${s//\'/\&#39;}"
   printf '%s' "$s"
 }
 
@@ -210,7 +210,7 @@ html_escape_nbsp() {
   # HTML-escape and replace spaces with &nbsp; to avoid line breaks in dates/times
   local s
   s="$(html_escape "$1")"
-  s="${s// /&nbsp;}"
+  s="${s// /\&nbsp;}"
   printf "%s" "$s"
 }
 
@@ -737,10 +737,10 @@ PY
 log "starte PaperlessNGX-Exporter (v${SCRIPT_VERSION})"
 
 # Validate ints
-if ! is_int "$KEEP_FILES"; then
-  log "WARN: PAPERLESS_KEEP_FILES ist nicht numerisch (${KEEP_FILES}) -> setze 10"
-  KEEP_FILES=10
+if [[ ! "$KEEP_FILES" =~ ^[0-9]{1,9}$ ]] || (( 10#$KEEP_FILES < 1 )); then
+  fail 2 "PAPERLESS_KEEP_FILES muss eine positive ganze Zahl von 1 bis 999999999 sein. Kein Export wurde gestartet."
 fi
+KEEP_FILES=$((10#$KEEP_FILES))
 if ! is_int "$MAIL_FILELIST_LIMIT"; then
   log "WARN: MAIL_FILELIST_LIMIT ist nicht numerisch (${MAIL_FILELIST_LIMIT}) -> setze 10"
   MAIL_FILELIST_LIMIT=10

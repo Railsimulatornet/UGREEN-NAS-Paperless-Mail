@@ -82,7 +82,7 @@ Nach erfolgreichem Test kannst du über `crontab -e` einen täglichen Lauf um 02
 10 2 * * * /bin/bash /volume2/docker/paperless-ngx/scripts/paperless-export_with_mail.sh >> /volume2/docker/paperless-ngx/scripts/cron.log 2>&1
 ```
 
-Die Aufbewahrung entfernt ältere `paperless_export_*.zip` nach einem erfolgreichen Export. Plane neben den Dokumentexporten auch die Sicherung deiner Konfiguration und der persistenten Datenbank- und Redis-Volumes ein.
+Die Aufbewahrung entfernt ältere `paperless_export_*.zip` nach einem erfolgreichen Export. `PAPERLESS_KEEP_FILES` (oder `KEEP_FILES`) muss eine positive ganze Zahl von 1 bis 999999999 sein; der Standard ist 10. Null und ungültige Werte stoppen den Lauf vor dem Export und verändern keine vorhandenen Sicherungen. Führende Nullen werden dezimal interpretiert. Plane neben den Dokumentexporten auch die Sicherung deiner Konfiguration und der persistenten Datenbank- und Redis-Volumes ein.
 
 ### Aktualisierung
 
@@ -193,7 +193,7 @@ After a successful test, use `crontab -e` to schedule a daily run at 02:10:
 10 2 * * * /bin/bash /volume2/docker/paperless-ngx/scripts/paperless-export_with_mail.sh >> /volume2/docker/paperless-ngx/scripts/cron.log 2>&1
 ```
 
-Retention removes older `paperless_export_*.zip` files after a successful export. Alongside document exports, plan backups of your configuration and persistent database and Redis volumes.
+Retention removes older `paperless_export_*.zip` files after a successful export. `PAPERLESS_KEEP_FILES` (or `KEEP_FILES`) must be a positive integer from 1 to 999999999; the default is 10. Zero and invalid values stop the run before export and leave existing backups unchanged. Leading zeros are interpreted as decimal. Alongside document exports, plan backups of your configuration and persistent database and Redis volumes.
 
 ### Updates
 
